@@ -34,10 +34,9 @@ Built using **Next.js (frontend)**, **Express + MongoDB (backend)**, and **Docke
 - Docker + Docker Compose  
 - GitHub Actions (CI/CD)  
 
----
 
 ## 📂 Project Structure
-
+```
 inventory-system/
 ├── frontend/ # Next.js frontend
 ├── backend/ # Express + MongoDB backend
@@ -51,35 +50,35 @@ inventory-system/
 ├── .github/workflows/ # CI/CD pipelines
 ├── docs/ # Documentation (SDLC, diagrams, planning)
 └── README.md # Project overview
-
+```
 ## 🚀 Getting Started
 
 ### 1️⃣ Clone the repository
-
+```
 git clone https://github.com/Badabhai/Inventory_Management_System.git
 cd inventory-system
-
+```
 ### 2️⃣ Setup Environment Variables
 ### 3️⃣ Run Backend
 ### 4️⃣ Run Frontend
 ### 5️⃣ Run with Docker (Full Stack)
 
-🧪 Running Tests
+### 🧪 Running Tests
 
-📖 API Documentation
+### 📖 API Documentation
 
-🛠️ CI/CD Pipeline
+### 🛠️ CI/CD Pipeline
 
-📘 Documentation
-
+## 📘 Documentation
+```
 All planning, diagrams, and SDLC documents are in the /docs folder:
  -planning.md
  -architecture.drawio
  -db-schema.md
-
-🤝 Contributing
+```
+## 🤝 Contributing
 Pull requests are welcome! Please open an issue first to discuss changes.
 
-📜 License
+## 📜 License
 
 This project is licensed under the MIT License.

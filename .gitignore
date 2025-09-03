@@ -1,0 +1,11 @@
+# Node
+node_modules/
+package-lock.json
+
+# Build
+dist/
+build/
+.next/
+
+# Env files
+.env

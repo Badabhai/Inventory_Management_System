@@ -46,5 +46,5 @@ json
 - All APIs return JSON.
 - Authentication handled via JWT Bearer token.
 - Role-based access:
-- - **Admin**: manage users, categories, items.
-- - **User**: manage their items, view logs.
+  - **Admin**: manage users, categories, items.
+  - **User**: manage their items, view logs.

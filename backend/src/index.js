@@ -1,6 +1,7 @@
 import dotenv from "dotenv"
 import express from "express"
 import connectDB from "./db/db.js"
+import {app} from "./app.js"
 
 dotenv.config();
 
@@ -14,21 +15,21 @@ connectDB()
 .catch((err)=>{console.error("MongoDB Connection Failed ! ",err);
 })
 
-const app = express();
+// const app = express();
 
 
 //Routes
-app.get("/",(req,res)=>{
-    res.send("IMS is running");
-}); 
+// app.get("/",(req,res)=>{
+//     res.send("IMS is running");
+// }); 
 
 //Export app for testing
 // module.exports = app;
 
 //Run Server
 // if(require.main === module) {
-    const PORT = process.env.PORT || 3000; 
-    app.listen(PORT, () => {
-        console.log(`Server is running on ${PORT}`);
-    })
+    // const PORT = process.env.PORT || 3000; 
+    // app.listen(PORT, () => {
+    //     console.log(`Server is running on ${PORT}`);
+    // })
 // }

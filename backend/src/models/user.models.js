@@ -21,6 +21,12 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        userImage : {
+            type: String, //Cloudinary url
+        },
+        refreshToken : {
+            type: String,
+        }
     },
     {timestamps: true}
 )
@@ -30,7 +36,7 @@ userSchema.pre("save", async function (next) {
     if(!this.isModified("password")) return next()
 
     //If password is modified then encrypt it
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await bcrypt.hash(this.password, 10)
     next()
 })
 

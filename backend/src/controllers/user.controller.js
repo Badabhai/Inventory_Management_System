@@ -135,6 +135,7 @@ const loginUser = asyncHandler( async(req,res) => {
 
 
 const logoutUser = asyncHandler( async(req,res) => {
+    //find user by Id and remove refresh token
     User.findByIdAndUpdate(
         req.user._id,
         {
@@ -144,6 +145,7 @@ const logoutUser = asyncHandler( async(req,res) => {
         }
     )
 
+    //return res and clear cookies
     const options = {
         httpOnly: true,
         secure: true
@@ -164,6 +166,7 @@ const logoutUser = asyncHandler( async(req,res) => {
 })
 
 const refreshAcessToken = asyncHandler( async(req,res) => {
+    // get refresh token from req
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
     if(!incomingRefreshToken) {
@@ -171,6 +174,7 @@ const refreshAcessToken = asyncHandler( async(req,res) => {
     }
 
     try {
+        //Verfiy refresh token with existing user
         const decodedRefreshToken = jwt.verify(incomingRefreshToken,process.env.REFRESH_TOKEN_SECRET);
     
         const existingUser = await User.findById(decodedRefreshToken._id);
@@ -182,14 +186,16 @@ const refreshAcessToken = asyncHandler( async(req,res) => {
         if(incomingRefreshToken !== existingUser.refreshToken) {
             throw new ApiError(401,"Refresh token is expired")
         }
-    
+
+        //Generate new access and refresh token
         const {accessToken,refreshToken} = await generateAccessAndRefreshToken(existingUser._id)
     
         const options = {
             httpOnly: true,
             secure: true
         }
-    
+
+        //return res
         return res
         .status(200)
         .cookie("accessToken",accessToken,options)
@@ -210,4 +216,41 @@ const refreshAcessToken = asyncHandler( async(req,res) => {
 
 })
 
-export { registerUser, loginUser, logoutUser, refreshAcessToken}
+const updateUserData = asyncHandler( async(req,res) => {
+    //get new user data from req.body
+    const { userName } = req.body
+
+    //verify new user data
+    if(!userName) {
+        throw new ApiError(400, "UserName is required")
+    }
+
+    try {
+        //update user data
+        await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                $set: {
+                    userName
+                }
+            }
+        )
+
+        const newUserData = await User.findById(req.user._id).select("-password -refreshToken");
+    
+        //return res
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                { user : newUserData },
+                "User data updated successfully"
+            )
+        )
+    } catch (error) {
+        throw new ApiError(500,"Error Occured while updating user data")
+    }
+})
+
+export { registerUser, loginUser, logoutUser, refreshAcessToken, updateUserData}

@@ -24,6 +24,9 @@ const userSchema = new mongoose.Schema(
         userImage : {
             type: String, //Cloudinary url
         },
+        userImagePublicId : {
+            type: String, //Cloudinary public id
+        },
         refreshToken : {
             type: String,
         },

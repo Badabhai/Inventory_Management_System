@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { generateOtp } from "../utils/generateOtp.js"
 import jwt from "jsonwebtoken";
@@ -51,7 +51,8 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     role,
-    userImage: userImage?.url || ""
+    userImage: userImage?.url || "",
+    userImagePublicId: userImage?.public_id || ""
   });
 
   console.log("User Created", user);
@@ -401,6 +402,54 @@ const verifyUser = asyncHandler(async(req,res)=> {
 })
 
 //update userImage
+const updateUserImage = asyncHandler( async(req,res) => {
+  // get user
+  const user = req.user;
+
+  // check userImage
+  const localImagePath = req?.file.path;
+
+  if(!localImagePath) {
+    throw new ApiError(400,"User Image is required")
+  }
+
+try {
+    // upload new image on cloudinary
+    const newCoverImage = await uploadOnCloudinary(localImagePath)
+  
+    if(!newCoverImage) {
+      throw new ApiError(400, "User Image is required")
+    }
+    // remove old image
+    if(user.userImagePublicId) {
+      const removeImageResponse = await deleteFromCloudinary(user.userImagePublicId)
+    
+      if(!removeImageResponse) {
+        throw new ApiError(500, "Error occured while deleting Image")
+      }
+    }
+    // update in db
+    await User.findByIdAndUpdate(
+      user._id,
+      {
+        $set : {
+          userImage : newCoverImage.url,
+          userImagePublicId : newCoverImage.public_id
+        }
+      }
+    )
+    // return res
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {},
+        "User Image Updated Successfully"
+      )
+    )
+} catch (error) {
+  throw new ApiError(500,"Something went wrong while updating image")
+}
+})
 
 export {
   registerUser,
@@ -410,5 +459,6 @@ export {
   updateUserData,
   changePassword,
   getOtp,
-  verifyUser
+  verifyUser,
+  updateUserImage
 };

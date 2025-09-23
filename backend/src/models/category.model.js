@@ -12,7 +12,13 @@ const categorySchema = mongoose.Schema(
         },
         createdBy : {
             type : Schema.Types.ObjectId,
-            ref : "User"
+            ref : "User",
+            required : true
+        },
+        organisation : {
+            type : Schema.Types.ObjectId,
+            ref : "User",
+            required : true
         }
     },
     {timestamps: true}

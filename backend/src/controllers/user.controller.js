@@ -59,7 +59,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // remove password and refresh token from response
   const createdUser = await User.findById(user._id).select(
-    "-password -refreshToken"
+    "-password -refreshToken -otp"
   );
 
   // check for user creation
@@ -451,6 +451,20 @@ try {
 }
 })
 
+//get User Profile
+const getUserProfile = asyncHandler( async(req,res) => {
+  //get user
+  const user = req.user;
+  //return response
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {user},
+      "User Data fetched successfully"
+    )
+  )
+})
+
 export {
   registerUser,
   loginUser,
@@ -460,5 +474,6 @@ export {
   changePassword,
   getOtp,
   verifyUser,
-  updateUserImage
+  updateUserImage,
+  getUserProfile
 };

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 
@@ -17,10 +17,6 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        role : {
-            type: String,
-            required: true,
-        },
         userImage : {
             type: String, //Cloudinary url
         },
@@ -34,6 +30,19 @@ const userSchema = new mongoose.Schema(
             type : Boolean,
             default : false
         },
+        organisations : [
+            {
+                organisation : {
+                    type : Schema.Types.ObjectId,
+                    ref : "Organisation"
+                },
+                role : {
+                    type : String,
+                    enum : ["admin","user"],
+                    default : "user"
+                }
+            }
+        ],
         otp : {
             type: Number
         }

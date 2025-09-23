@@ -28,6 +28,11 @@ const transactionSchema = mongoose.Schema(
         },
         remark : {
             type : String,
+        },
+        organisation : {
+            type : Schema.Types.ObjectId,
+            ref : "User",
+            required : true
         }
     },
     {timestamps : true}

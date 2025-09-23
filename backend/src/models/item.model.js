@@ -34,6 +34,11 @@ const itemSchema = mongoose.Schema(
             type : Schema.Types.ObjectId,
             ref : "User",
             required : true
+        },
+        organisation : {
+            type : Schema.Types.ObjectId,
+            ref : "User",
+            required : true
         }
 
     },

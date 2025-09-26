@@ -62,9 +62,9 @@ const updateOrganisation = asyncHandler( async(req,res) => {
     const requiredFields = [ "organisationName", "description" ];
 
     //verify details
-    if(!organisationId) {
-        throw new ApiError(400,"OrganisationID is requried")
-    }
+    // if(!organisationId) {
+    //     throw new ApiError(400,"OrganisationID is requried")
+    // }
 
     if(requiredFields.every((field) => !req.body[field] || req.body[field].trim() === "")) {
         throw new ApiError(400,"Atleast one field is required");

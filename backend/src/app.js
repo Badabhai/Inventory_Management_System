@@ -20,10 +20,12 @@ app.use(cookieparser())
 //Routes Import 
 import userRouter from "./routes/user.routes.js"
 import organisationRouter from "./routes/organisation.routes.js"
+import membershipRouter from "./routes/membership.routes.js"
 
 
 //Routes Declaration
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/organisations", organisationRouter)
+app.use("/api/v1/memberships", membershipRouter)
 
 export { app }

@@ -1,36 +1,25 @@
+import { Membership } from "../models/membership.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
-export const verifyUserRole = asyncHandler( async(req,res,next) => {
-    // try {
-        const userOrganisations = req.user.organisations;
+export const verifyUserRole = (allowedRoles = []) => asyncHandler( async(req,res,next) => {
         const { organisationId } = req.body;
 
         if(!organisationId) {
             throw new ApiError(400,"OrganisationId is required")
         }
 
-        if(!userOrganisations || userOrganisations.length === 0) {
-            throw new ApiError(404,"User doesn't belong to any Organisaiton")
-        }
-
-        const selectedOrganisation = userOrganisations.find((field)=> field.organisation.toString() === organisationId)
-        console.log(selectedOrganisation);
+        const userMembershipData = await Membership.findOne({organisation:organisationId,member:req.user._id});
         
-        if(!selectedOrganisation) {
+        if(!userMembershipData) {
             throw new ApiError(401,"User doesn't belong to organisation")
         }
 
-        if(selectedOrganisation?.role !== "admin") {
+        if(!allowedRoles.includes(userMembershipData.role)) {
             throw new ApiError(401,"Forbidden: insuffiecient rights")
         }
-        // userOrganisations.forEach((field)=> {
-        //     if(field.organisation === organisationId && field.role !=="admin") {
-        //     }
-        // })
+
+        req.userRole = userMembershipData.role;
 
         next();
-    // } catch (error) {
-    //     throw new ApiError(500,"Error occured while verifying User Rights")
-    // }
 }) 

@@ -1,13 +1,27 @@
 import { Router } from "express";
-import { createOrganisation, updateOrganisation } from "../controllers/organisation.controller.js";
+import {
+  createOrganisation,
+  deleteOrganisation,
+  getOrganisationDetails,
+  updateOrganisation,
+} from "../controllers/organisation.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
-import { verifyUserRole } from "../middlewares/authorizeRole.middleware.js"
+import { verifyUserRole } from "../middlewares/authorizeRole.middleware.js";
 
 const router = Router();
 
-router.route('/create').post(verifyJWT,createOrganisation)
+router.route("/create").post(verifyJWT, createOrganisation);
+router.route("/get").post(verifyJWT, getOrganisationDetails);
 
 //require admin
-router.route('/update').patch(verifyJWT, verifyUserRole, updateOrganisation)
+router.route("/update").patch(verifyJWT, verifyUserRole(["admin","owner"]), updateOrganisation);
 
-export default router
+
+//require owner
+router
+  .route("/delete")
+  .post(verifyJWT, verifyUserRole(["owner"]), deleteOrganisation);
+
+
+
+export default router;

@@ -7,7 +7,7 @@ const categorySchema = mongoose.Schema(
             required : true,
             unique : true
         },
-        description : {
+        categoryDescription : {
             type : String
         },
         createdBy : {
@@ -17,7 +17,7 @@ const categorySchema = mongoose.Schema(
         },
         organisation : {
             type : Schema.Types.ObjectId,
-            ref : "User",
+            ref : "Organisation",
             required : true
         }
     },

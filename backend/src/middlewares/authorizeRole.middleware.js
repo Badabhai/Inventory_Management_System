@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const verifyUserRole = (allowedRoles = []) => asyncHandler( async(req,res,next) => {
-        const { organisationId } = req.body;
+        const { organisationId } = req.body || req.query;
 
         if(!organisationId) {
             throw new ApiError(400,"OrganisationId is required")

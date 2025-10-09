@@ -37,8 +37,12 @@ const itemSchema = mongoose.Schema(
         },
         organisation : {
             type : Schema.Types.ObjectId,
-            ref : "User",
+            ref : "Organisation",
             required : true
+        },
+        isDeleted : {
+            type : Boolean,
+            default : false
         }
 
     },

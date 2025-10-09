@@ -12,11 +12,6 @@ const transactionSchema = mongoose.Schema(
             ref : "User",
             required : true
         },
-        category : {
-            type : Schema.Types.ObjectId,
-            ref : "Category",
-            required : true
-        },
         action : {
             type : String,
             enum : ["ADD","USE","DELETE","UPDATE"],
@@ -37,3 +32,5 @@ const transactionSchema = mongoose.Schema(
     },
     {timestamps : true}
 )
+
+export const Transaction = mongoose.model("Transaction",transactionSchema)

@@ -199,7 +199,7 @@ const getAllItems = asyncHandler( async(req,res) => {
 
     let isDeleted = false;
 
-    if(deleted.trim() === "true") {
+    if(deleted?.trim() === "true") {
         isDeleted = true
     }
 

@@ -89,7 +89,7 @@ const createTransaction = asyncHandler( async(req,res) =>{
 //get all transactions
 const getAllTransactions = asyncHandler( async(req,res) => {
     //get organisationId,categoryIds and verify
-    const { organisationId,categories } = req.query;
+    const { organisationId,categories,items } = req.query;
 
     const filterCategories = categories ? 
         categories
@@ -102,8 +102,17 @@ const getAllTransactions = asyncHandler( async(req,res) => {
         })
         : [];
 
+    const filterItems = items ? 
+        items
+        .split(",")
+        .map((id) => {
+            if (!mongoose.Types.ObjectId.isValid(id.trim())) {
+                throw new ApiError(400, `Invalid item ID : ${id}`);
+            }
+            return new mongoose.Types.ObjectId(id.trim())
+        })
+        : [];
 
-    console.log(filterCategories);
     
     //make aggregation pipeline
 
@@ -149,6 +158,7 @@ const getAllTransactions = asyncHandler( async(req,res) => {
         {
             $project : {
                 "itemDetails.itemName" : 1,
+                "itemDetails._id" : 1,
                 "categoryDetails._id" : 1,
                 "categoryDetails.categoryName" : 1,
                 "userDetails.userName" : 1,
@@ -167,6 +177,18 @@ const getAllTransactions = asyncHandler( async(req,res) => {
             $match : {
                 "categoryDetails._id" : {
                     $in : filterCategories
+                }
+            }
+        }
+        )
+    }
+
+    if(filterItems?.length !== 0) {
+        pipeline.push(
+            {
+            $match : {
+                "itemDetails._id" : {
+                    $in : filterItems
                 }
             }
         }

@@ -109,7 +109,7 @@ const updateCategoryDetials = asyncHandler(async (req, res) => {
 //get Category Details
 const getCategoryDetails = asyncHandler(async (req, res) => {
   //get categoryId
-  const {categoryId} = req.body;
+  const {categoryId} = req.query;
   if(categoryId === "") {
     throw new ApiError(400,"Category Id is required")
   }
@@ -166,7 +166,7 @@ const deleteCategory = asyncHandler(async (req, res) => {
 //get All Categories
 const getAllCategories = asyncHandler(async (req, res) => {
   //get organisation Id
-  const { organisationId } = req.body;
+  const { organisationId } = req.query;
 
   //find all categories
   const allCategories = await Category.find({ organisation:organisationId}).populate([

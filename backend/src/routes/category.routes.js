@@ -7,10 +7,10 @@ import { createCategory, deleteCategory, getAllCategories, getCategoryDetails, u
 const router = Router(); 
 
 router.route("/create-category").post(verifyJWT,verifyUserRole(["owner","admin"]),createCategory)
-router.route("/update-category").post(verifyJWT,verifyUserRole(["owner","admin"]),updateCategoryDetials)
-router.route("/delete-category").post(verifyJWT,verifyUserRole(["owner","admin"]),deleteCategory)
+router.route("/update-category").patch(verifyJWT,verifyUserRole(["owner","admin"]),updateCategoryDetials)
+router.route("/delete-category").delete(verifyJWT,verifyUserRole(["owner","admin"]),deleteCategory)
 
-router.route("/get-categorydetails").post(verifyJWT,verifyUserRole(["owner","admin","member"]),getCategoryDetails)
-router.route("/get-allcategories").post(verifyJWT,verifyUserRole(["owner","admin","member"]),getAllCategories)
+router.route("/get-categorydetails").get(verifyJWT,verifyUserRole(["owner","admin","member"]),getCategoryDetails)
+router.route("/get-allcategories").get(verifyJWT,verifyUserRole(["owner","admin","member"]),getAllCategories)
 
 export default router

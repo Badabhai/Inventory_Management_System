@@ -6,10 +6,10 @@ import { addMember, getMemberDetails, getMembers, getUserOrganisations, removeMe
 const router = Router();
 
 router.route("/addmember").post(verifyJWT,verifyUserRole(["admin","owner"]),addMember);
-router.route("/getmemberdetails").post(verifyJWT,verifyUserRole(["admin","owner"]),getMemberDetails);
-router.route("/updatemember").post(verifyJWT,verifyUserRole(["admin","owner"]),updateMemberDetails);
-router.route("/removemember").post(verifyJWT,verifyUserRole(["admin","owner"]),removeMember);
-router.route("/members-list").post(verifyJWT,verifyUserRole(["admin","owner"]),getMembers);
+router.route("/getmemberdetails").get(verifyJWT,verifyUserRole(["admin","owner"]),getMemberDetails);
+router.route("/updatemember").patch(verifyJWT,verifyUserRole(["admin","owner"]),updateMemberDetails);
+router.route("/removemember").delete(verifyJWT,verifyUserRole(["admin","owner"]),removeMember);
+router.route("/members-list").get(verifyJWT,verifyUserRole(["admin","owner"]),getMembers);
 router.route("/user-organisations").get(verifyJWT,getUserOrganisations);
 
 export default router;

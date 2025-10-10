@@ -62,7 +62,7 @@ const addMember = asyncHandler(async (req, res) => {
 //get member details
 const getMemberDetails = asyncHandler(async (req, res) => {
   //get member details & verify
-  const { memberId, organisationId } = req.body;
+  const { memberId, organisationId } = req.query;
 
   if (memberId === "") {
     throw new ApiError(400, "Member Email is required");
@@ -185,7 +185,7 @@ const removeMember = asyncHandler(async (req, res) => {
 //get members
 const getMembers = asyncHandler(async (req, res) => {
   //get organisationId
-  const { organisationId } = req.body;
+  const { organisationId } = req.query;
 
   //get all Members
   const allMembersData = await Membership.find({ organisation:organisationId }).select("-organisation").populate("member","userName email userImage");

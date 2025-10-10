@@ -6,7 +6,7 @@ import { createItem, deleteItem, getAllItems, getItemDetails, updateItem } from 
 const router = Router();
 
 router.route('/create-item').post(verifyJWT,verifyUserRole(["member","admin","owner"]),createItem);
-router.route('/update-item').post(verifyJWT,verifyUserRole(["member","admin","owner"]),updateItem);
+router.route('/update-item').patch(verifyJWT,verifyUserRole(["member","admin","owner"]),updateItem);
 router.route('/delete-item').delete(verifyJWT,verifyUserRole(["member","admin","owner"]),deleteItem);
 router.route('/get-allitems').get(verifyJWT,verifyUserRole(["member","admin","owner"]),getAllItems);
 router.route('/get-itemdetails').get(verifyJWT,verifyUserRole(["member","admin","owner"]),getItemDetails)

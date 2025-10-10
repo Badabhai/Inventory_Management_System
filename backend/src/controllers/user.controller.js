@@ -302,7 +302,7 @@ const changePassword = asyncHandler( async(req,res) => {
 //getOtp
 const getOtp = asyncHandler(async( req,res ) => {
   // get email,otpType
-  const { email,otpType } =req.body;
+  const { email,otpType } =req.query;
 
   // verify email & otpType are non-empty
   if( email === "" || otpType === "" )

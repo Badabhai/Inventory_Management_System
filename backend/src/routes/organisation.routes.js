@@ -11,7 +11,7 @@ import { verifyUserRole } from "../middlewares/authorizeRole.middleware.js";
 const router = Router();
 
 router.route("/create").post(verifyJWT, createOrganisation);
-router.route("/get").post(verifyJWT, getOrganisationDetails);
+router.route("/get-organisationdetails").get(verifyJWT,verifyUserRole(["admin","owner","member"]),getOrganisationDetails);
 
 //require admin
 router.route("/update").patch(verifyJWT, verifyUserRole(["admin","owner"]), updateOrganisation);
@@ -20,7 +20,7 @@ router.route("/update").patch(verifyJWT, verifyUserRole(["admin","owner"]), upda
 //require owner
 router
   .route("/delete")
-  .post(verifyJWT, verifyUserRole(["owner"]), deleteOrganisation);
+  .delete(verifyJWT, verifyUserRole(["owner"]), deleteOrganisation);
 
 
 

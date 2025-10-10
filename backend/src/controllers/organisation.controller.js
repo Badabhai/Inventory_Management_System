@@ -138,16 +138,7 @@ const deleteOrganisation = asyncHandler(async (req, res) => {
 //get organisation
 const getOrganisationDetails = asyncHandler(async (req, res) => {
   // get organisation Id
-  const { organisationId } = req.body;
-
-  const selectedOrganisation = req.user.organisations.find(
-    (field) => field.organisation.toString() === organisationId
-  );
-  // console.log(selectedOrganisation);
-
-  if (!selectedOrganisation) {
-    throw new ApiError(401, "User doesn't belong to organisation");
-  }
+  const { organisationId } = req.query;
 
   try {
     // find organisation in db

@@ -30,19 +30,6 @@ const userSchema = new mongoose.Schema(
             type : Boolean,
             default : false
         },
-        organisations : [
-            {
-                organisation : {
-                    type : Schema.Types.ObjectId,
-                    ref : "Organisation"
-                },
-                role : {
-                    type : String,
-                    enum : ["owner","admin","user"],
-                    default : "user"
-                }
-            }
-        ],
         otp : {
             type: Number
         }

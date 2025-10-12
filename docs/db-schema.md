@@ -2,53 +2,90 @@
 
 ## 1. Users Collection
 
-Stores user accounts (admins + normal users).
+Stores user accounts (owners, admins, normal users).
 
 ```
 {
   "_id": "ObjectId",
-  "name": "Suraj Yadav",
+  "userName": "Suraj Yadav",
   "email": "suraj@example.com",
-  "passwordHash": "hashed_password",
-  "role": "admin",   // values: "admin", "user"
+  "password": "hashed_password",
+  "userImage": "cloudinary-image-url.com",
+  "userImagePublicId": "cloudinaryImagePublicId",
+  "refreshToken": "token",
+  "isVerified": "true", // true/false,
+  "otp": "otp",
+  "createdAt": "2025-09-06T12:00:00Z",
+  "updatedAt": "2025-09-06T12:30:00Z"
+}
+```
+## 2. Organisations Collection
+
+Stores Organisation Data
+
+```
+{
+  "_id": "ObjectId",
+  "organisationName": "ABC R&D Department",
+  "createdBy": "ObjectId (ref: Users)",
+  "description": "IMS for R&D Team of ABC company",
   "createdAt": "2025-09-06T12:00:00Z",
   "updatedAt": "2025-09-06T12:30:00Z"
 }
 ```
 
-## 2. Categories Collection
+## 3. Memberships Collection
 
-Organizes inventory items.
+Stores Membership Data 
 
 ```
 {
   "_id": "ObjectId",
-  "name": "Resistors",
-  "description": "All resistor components",
-  "createdAt": "2025-09-06T12:00:00Z"
+  "organisation": "ObjectId (ref: Organisations)",
+  "member": "ObjectId (ref: Users)",
+  "role": "member", // "owner","admin","member"
 }
 ```
 
-## 3. Items Collection
+
+## 4. Categories Collection
+
+Stores Category Data.
+
+```
+{
+  "_id": "ObjectId",
+  "categoryName": "Resistors",
+  "categoryDescription": "All resistor components",
+  "createdBy": "ObjectId (ref: Users)",
+  "organisation": "ObjectId (ref: Organisations)",
+  "createdAt": "2025-09-06T12:00:00Z",
+  "updatedAt": "2025-09-06T12:30:00Z"
+}
+```
+
+## 5. Items Collection
 
 Represents physical inventory items.
 
 ```
 {
   "_id": "ObjectId",
-  "name": "Resistor 10kΩ",
+  "itemName": "Resistor 10kΩ",
   "serialNumber": "11111111",
-  "categoryId": "ObjectId (ref: Categories)",
+  "category": "ObjectId (ref: Categories)",
   "quantity": 120,
   "location": "Bin A2",
   "addedBy": "ObjectId (ref: Users)",
   "updatedBy": "ObjectId (ref: Users)",
+  "organisation": "ObjectId (ref: Organisations)",
+  "isDeleted": false, // true/false
   "createdAt": "2025-09-06T12:00:00Z",
   "updatedAt": "2025-09-06T12:45:00Z"
 }
 ```
 
-## 4. Transactions Collection
+## 6. Transactions Collection
 
 Keeps a log of all inventory actions (audit trail).
 
@@ -57,10 +94,12 @@ Keeps a log of all inventory actions (audit trail).
   "_id": "ObjectId",
   "itemId": "ObjectId (ref: Items)",
   "userId": "ObjectId (ref: Users)",
-  "action": "ADD",      // values: ADD, UPDATE, DELETE
-  "quantityChange": 20, // e.g., +20 or -5
-  "usage": "MotorDriver R&D"        // values: Project + (R&D/Production) / Sample
-  "timestamp": "2025-09-06T13:00:00Z"
+  "action": "ADD",      // values: ADD, USE, UPDATE, DELETE
+  "quantityChange": 20,
+  "remark": "MotorDriver R&D"        // values: Project + (R&D/Production) / Sample
+  "organisation": "ObjectId (ref: Organisations)",
+  "createdAt": "2025-09-06T12:00:00Z",
+  "updatedAt": "2025-09-06T12:45:00Z"
 }
 ```
 
@@ -68,6 +107,6 @@ Keeps a log of all inventory actions (audit trail).
 
 - Users → Items: each item is linked to the user who added/updated it.
 
-- Items → Categories: each item belongs to a category.
+- Items → Categories → Organisation: each item belongs to a category.Catergories belong to an organisation
 
 - Transactions → Items & Users: logs who changed what and when.
